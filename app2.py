@@ -16,9 +16,9 @@ def run():
     The goal is to analyze distribution, risk, and long-term expected value in credits.
     """)
 
-    # -----------------------------
-    # MATRIX FUNCTIONS
-    # -----------------------------
+    # =============================
+    # MATRIX
+    # =============================
     def create_matrix(n, k):
         return [[k for _ in range(n)] for _ in range(n)]
 
@@ -32,6 +32,9 @@ def run():
     def count_ones(mat):
         return sum(sum(row) for row in mat)
 
+    # =============================
+    # PATTERNS
+    # =============================
     def count_2x2(mat):
         n = len(mat)
         count = 0
@@ -97,9 +100,9 @@ def run():
 
         return count
 
-    # -----------------------------
-    # ONE GAME (FIXED!)
-    # -----------------------------
+    # =============================
+    # ONE GAME
+    # =============================
     def play_one_game(prob, n):
 
         life = 3
@@ -125,9 +128,9 @@ def run():
 
         return total_o, total_no
 
-    # -----------------------------
+    # =============================
     # UI
-    # -----------------------------
+    # =============================
     st.subheader("⚙️ Simulation Settings")
 
     col1, col2, col3 = st.columns(3)
@@ -145,17 +148,22 @@ def run():
 
     bet = 20
 
-    # -----------------------------
-    # RUN
-    # -----------------------------
+    # =============================
+    # SIMULATION
+    # =============================
     if run_btn:
 
         wins_o = []
         wins_no = []
 
-        zero_o = zero_no = 0
-        ge40_o = ge40_no = 0
-        sum_o = sum_no = 0
+        zero_o = 0
+        zero_no = 0
+
+        ge40_o = 0
+        ge40_no = 0
+
+        sum_o = 0
+        sum_no = 0
 
         progress = st.progress(0)
 
@@ -169,35 +177,104 @@ def run():
             sum_o += o
             sum_no += no
 
-            zero_o += (o == 0)
-            zero_no += (no == 0)
+            if o == 0:
+                zero_o += 1
+            if no == 0:
+                zero_no += 1
 
-            ge40_o += (o >= 40)
-            ge40_no += (no >= 40)
+            if o >= 40:
+                ge40_o += 1
+            if no >= 40:
+                ge40_no += 1
 
-            if i % max(1, games // 100) == 0:
+            if i % (games // 100 + 1) == 0:
                 progress.progress(i / games)
 
+        # =============================
+        # RESULTS
+        # =============================
         RTP_o = (sum_o / (games * bet)) * 100
         RTP_no = (sum_no / (games * bet)) * 100
+
+        p_win40_o = (ge40_o / games) * 100
+        p_win40_no = (ge40_no / games) * 100
+
+        p_zero_o = (zero_o / games) * 100
+        p_zero_no = (zero_no / games) * 100
 
         st.subheader("📊 Results")
 
         col1, col2 = st.columns(2)
 
         with col1:
-            st.write(f"RTP Overlap: {RTP_o:.2f}%")
+            st.markdown("### 🔵 Overlap Model")
+            st.write(f"Return to Player (RTP): {RTP_o:.2f}%")
+            st.caption("Return to Player represents the percentage of total bet returned to the player over time, measured in credits.")
+
+            st.write(f"Probability of profit ≥ 40 credits: {p_win40_o:.2f}%")
+            st.caption("This shows how often the player achieves at least 40 credits profit.")
+
+            st.write(f"Probability of zero win: {p_zero_o:.2f}%")
+            st.caption("This shows how often the player ends with no winnings at all.")
 
         with col2:
-            st.write(f"RTP No Overlap: {RTP_no:.2f}%")
+            st.markdown("### 🟢 No Overlap Model")
+            st.write(f"Return to Player (RTP): {RTP_no:.2f}%")
+            st.caption("Return to Player represents the percentage of total bet returned to the player over time, measured in credits.")
 
-        # Histogram
-        st.subheader("📊 Histogram")
+            st.write(f"Probability of profit ≥ 40 credits: {p_win40_no:.2f}%")
+            st.caption("This shows how often the player achieves at least 40 credits profit.")
+
+            st.write(f"Probability of zero win: {p_zero_no:.2f}%")
+            st.caption("This shows how often the player ends with no winnings at all.")
+
+        # =============================
+        # STATISTICS
+        # =============================
+        st.subheader("📈 Distribution Analysis (in credits)")
+
+        wins_o = np.array(wins_o)
+        wins_no = np.array(wins_no)
+
+        col1, col2 = st.columns(2)
+
+        with col1:
+            st.markdown("### 🔵 Overlap Model Statistics")
+
+            st.write(f"Expected value: {wins_o.mean():.2f} credits")
+            st.caption("Expected value represents the average reward per game over many simulations.")
+
+            st.write(f"Standard deviation: {wins_o.std():.2f} credits")
+            st.caption("Standard deviation measures how much results vary from the average value (risk/volatility).")
+
+            st.write(f"Minimum reward: {wins_o.min():.0f} credits")
+           
+            st.write(f"Maximum reward: {wins_o.max():.0f} credits")
+
+        with col2:
+            st.markdown("### 🟢 No Overlap Model Statistics")
+
+            st.write(f"Expected value: {wins_no.mean():.2f} credits")
+
+            st.write(f"Standard deviation: {wins_no.std():.2f} credits")
+
+            st.write(f"Minimum reward: {wins_no.min():.0f} credits")
+            st.write(f"Maximum reward: {wins_no.max():.0f} credits")
+
+        # =============================
+        # HISTOGRAM
+        # =============================
+        st.subheader("📊 Histogram of Rewards")
 
         fig, ax = plt.subplots()
 
-        ax.hist(wins_o, bins=40, alpha=0.6, label="Overlap")
-        ax.hist(wins_no, bins=40, alpha=0.6, label="No Overlap")
+        ax.hist(wins_o, bins=40, alpha=0.6, label="Overlap Model")
+        ax.hist(wins_no, bins=40, alpha=0.6, label="No Overlap Model")
 
+        ax.set_xlabel("Reward (credits)")
+        ax.set_ylabel("Frequency")
         ax.legend()
+        ax.grid(alpha=0.3)
+
+        st.pyplot(fig)
         st.pyplot(fig)
