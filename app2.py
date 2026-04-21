@@ -131,7 +131,7 @@ def run():
     # =============================
     # UI
     # =============================
-    st.subheader("⚙️ Simulation Settings")
+    st.subheader("⚙️ Settings")
 
     col1, col2, col3 = st.columns(3)
 
@@ -220,14 +220,9 @@ def run():
         with col2:
             st.markdown("### 🟢 No Overlap Model")
             st.write(f"Return to Player (RTP): {RTP_no:.2f}%")
-            st.caption("Return to Player represents the percentage of total bet returned to the player over time, measured in credits.")
-
             st.write(f"Probability of profit ≥ 40 credits: {p_win40_no:.2f}%")
-            st.caption("This shows how often the player achieves at least 40 credits profit.")
-
             st.write(f"Probability of zero win: {p_zero_no:.2f}%")
-            st.caption("This shows how often the player ends with no winnings at all.")
-
+            
         # =============================
         # STATISTICS
         # =============================
@@ -255,9 +250,7 @@ def run():
             st.markdown("### 🟢 No Overlap Model Statistics")
 
             st.write(f"Expected value: {wins_no.mean():.2f} credits")
-
             st.write(f"Standard deviation: {wins_no.std():.2f} credits")
-
             st.write(f"Minimum reward: {wins_no.min():.0f} credits")
             st.write(f"Maximum reward: {wins_no.max():.0f} credits")
 
