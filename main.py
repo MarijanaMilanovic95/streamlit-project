@@ -2,7 +2,7 @@ import streamlit as st
 import app1
 import app2
 
-st.set_page_config(page_title="My Projects", layout="wide")
+st.set_page_config(page_title="📊 Simulation Dashboard", layout="wide")
 
 st.title("📊 My Projects")
 
@@ -12,7 +12,8 @@ page = st.sidebar.selectbox(
 )
 
 if page == "Home":
-    st.title("📊 Simulation Dashboard")
+    st.write("📊 Welcome!")
+    st.write("👈 Please choose a project from the menu on the left.")
 
 elif page == "Monte Carlo Simulation":
     app2.run()
