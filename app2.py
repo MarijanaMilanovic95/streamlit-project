@@ -277,4 +277,3 @@ def run():
         ax.grid(alpha=0.3)
 
         st.pyplot(fig)
-        st.pyplot(fig)
