@@ -4,7 +4,7 @@ import app2
 
 st.set_page_config(page_title="My Projects", layout="wide")
 
-st.title("📊 My Data Science Projects")
+st.title("📊 My Projects")
 
 page = st.sidebar.selectbox(
     "Choose project",
