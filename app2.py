@@ -3,11 +3,6 @@ import random
 import numpy as np
 import matplotlib.pyplot as plt
 
-# -----------------------------
-# PAGE CONFIG
-# -----------------------------
-st.set_page_config(page_title="Monte Carlo Simulation", layout="wide")
-
 st.title("🎲 Monte Carlo Simulation")
 
 st.markdown("""
