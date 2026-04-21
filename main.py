@@ -4,7 +4,7 @@ import app2
 
 st.set_page_config(page_title="📊 Simulation Dashboard", layout="wide")
 
-st.title("📊 My Projects")
+st.title("📊 Simulation Dashboard")
 
 page = st.sidebar.selectbox(
     "Choose project",
