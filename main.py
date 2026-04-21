@@ -12,7 +12,7 @@ page = st.sidebar.selectbox(
 )
 
 if page == "Home":
-    st.write("Welcome!")
+    st.title("📊 Simulation Dashboard")
 
 elif page == "Monte Carlo Simulation":
     app2.run()
