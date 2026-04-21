@@ -4,11 +4,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # =============================
-# PAGE CONFIG
-# =============================
-st.set_page_config(page_title="Take the Offer Bonus", layout="wide")
-
-# =============================
 # TITLE + DESCRIPTION
 # =============================
 st.title("🎲 Optimal Strategy for Take-the-Offer Bonus")
