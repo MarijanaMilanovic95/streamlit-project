@@ -226,7 +226,7 @@ def run():
         # =============================
         # STATISTICS
         # =============================
-        st.subheader("📈 Distribution Analysis (in credits)")
+        st.subheader("📈 Distribution Analysis")
 
         wins_o = np.array(wins_o)
         wins_no = np.array(wins_no)
